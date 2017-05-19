@@ -1,0 +1,28 @@
+{
+  "name": "notifyme",
+  "version": "1.0.0",
+  "description": "notifies you when channel uploads a video",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnnovosel/NotifyMe.git"
+  },
+  "keywords": [
+    "youtube",
+    "channel"
+  ],
+  "author": "John",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnnovosel/NotifyMe/issues"
+  },
+  "homepage": "https://github.com/johnnovosel/NotifyMe#readme",
+  "dependencies": {
+    "discord.js": "^11.1.0",
+    "youtube-dl": "^1.11.1",
+    "yt-channel-videos": "^1.1.0"
+  }
+}
