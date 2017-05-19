@@ -1,6 +1,6 @@
 
-var yt = "kek0";
-var dt = "kek";
+module.exports.youtubeKey = process.env.YOUTUBE_KEY
+module.exports.discordToken = process.env.DISCORD_TOKEN;
 
-module.exports.yt = yt;
-module.exports.dt = dt;
+
+

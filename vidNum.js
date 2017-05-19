@@ -1,6 +1,6 @@
 var config = require('./config');
 var channel = require('./isChannel');
-var channelVids = require('yt-channel-videos')(config.yt);
+var channelVids = require('yt-channel-videos')(config.youtubeKey);
 console.log(channel);
 
 var videoNum;
