@@ -2,6 +2,7 @@ var isChannel = require('is-youtube-channel'),
     config = require('./config'),
     User = require('./lib/user.js'),
     Channel = require('./lib/Channels'),
+    channelVids = require('yt-channel-videos')(process.env.YOUTUBE_KEY),
     Discord = require('discord.js');
 
 // required variables for commands
@@ -23,12 +24,13 @@ var commands = new Map([
             } else {
                 if (valid == true) {
                     console.log('valid channel');
-                    message.reply('Added ' + channelName + ' to your subscriptions');
 
                     if (channelNum === 0) {
                         let channel = new Channel(channelName);
                         channelArray.push(channel);
                         channelArray[0].addSub(username);
+                        channelArray[0].updateVideoID(channelName);
+                        message.reply('Added ' + channelName + ' to your subscriptions');
                         channelNum++;
                     } else {
 
@@ -36,6 +38,8 @@ var commands = new Map([
                         for (var i = 0; i < channelNum; i++) {
                             if (channelNum > 0 && channelName === channelArray[i].getChannelName()) {
                                 channelArray[i].addSub(username);
+                                IncUserList(username, channelName);
+                                message.reply('Added ' + channelName + ' to your subscriptions');
                                 found = true;
                                 break;
                             }
@@ -46,6 +50,8 @@ var commands = new Map([
                             channelArray.push(channel);
                             channelNum++;
                             channelArray[channelNum - 1].addSub(username);
+                            channelArray[0].updateVideoID(channelName);
+                            message.reply('Added ' + channelName + ' to your subscriptions');
                             IncUserList(username, channelName);
                         }
                     }
@@ -66,10 +72,11 @@ var commands = new Map([
 
     }],
     ['create', function (space, message, username) {
+        const channel = bot.channels.find('name', 'bot-commands');
         let person = new User(username);
+        channel.send(`Welcome to NotifyBot, ${username}`);
 
         userArray.push(person);
-        message.reply('Created profile');
     }]
 ]);
 
@@ -78,6 +85,7 @@ const bot = new Discord.Client();
 // turns bot on 
 bot.on('ready', function () {
     console.log('NotifyBot is on.');
+
     if (config.env == 'dev') {
         bot.user.setStatus('dnd').catch(err => console.error(err));
         bot.user.setGame('Development').catch(err => console.error(err));
@@ -85,6 +93,8 @@ bot.on('ready', function () {
     } else {
         bot.user.setStatus('Online').catch(err => console.error(err));
         console.log('status set to online');
+        let username = "168216574052925440";
+        
     }
 });
 
@@ -101,7 +111,7 @@ function doCommand(message) {
         space = message.content.length;
     }
     let cmd = message.content.substring(1, space).toLowerCase();
-    let username = message.author.username + '#' + message.author.discriminator;
+    let username = message.author;
 
     let found = false;
     for (let key of commands.keys()) {
@@ -120,9 +130,21 @@ function doCommand(message) {
 // logs bot on with secret token
 bot.login(config.discordToken);
 
-function checkSubs() {
-    
+async function checkVidNum(channel) {
+    let lastVidID = (await channelVids.allUploads(channelName)).items[0].id;
+    if (lastVidID != channel.lastVidID) {
+        for(var i = 0; i < channel.subscriberList.length; i++) {
+            const guildChannel = bot.channels.find('name', 'bot-commands');
+            user = guildChannel.subscriberList[i];
+            guildChannel.send(guildChannel.channelName + ` has a new video, ${user}`);
+        }
+    }
 }
 
-setInterval(checkSubs(), 1000*60*15);
+setInterval(function() {
+    console.log('this is check subs');
+    for (var i = 0; i < channelArray.length; i++) {
+        checkVidNum(channelArray[i]);
+    }
+}, 1000*20);
 
