@@ -146,5 +146,5 @@ setInterval(function() {
     for (var i = 0; i < channelArray.length; i++) {
         checkVidNum(channelArray[i]);
     }
-}, 1000*20);
+}, 1000*60*15);
 
