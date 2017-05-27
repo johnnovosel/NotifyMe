@@ -18,6 +18,7 @@
   "homepage": "https://github.com/johnnovosel/NotifyMe#readme",
   "dependencies": {
     "discord.js": "^11.1.0",
+    "youtube-channel-crawler": "^1.0.2",
     "yt-channel-videos": "^1.1.0"
   }
 }
