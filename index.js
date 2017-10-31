@@ -8,19 +8,6 @@ var config = require('./config'),
 // required variables for commands
 var userArray = [];
 
-// list of commands
-var commandsMap = new Map([
-    ['ls', function () {
-
-    }],
-    ['add', function (space, message, userObject) { Add.Command(space, message, userObject) }],
-    ['create', function (space, message, username) {
-        const channel = bot.channels.find('name', 'bot-commands');
-        let person = new User(username);
-        channel.send(`Welcome to NotifyBot, ${username}`);
-    }]
-]);
-
 const bot = new Discord.Client();
 
 // turns bot on 
