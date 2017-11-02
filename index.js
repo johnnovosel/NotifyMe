@@ -24,9 +24,19 @@ bot.on('message', function (message) {
 
 
 function doCommand(message) {
-    let space = message.content.indexOf(' ');
-    
+    if(message.content === '#count') {
+        setInterval(function () {
+            console.log('it worked');
+                message.channel.fetchMessages({limit: 5})
+                .then(messages => {
+                    messages.array().forEach( message => console.log(message.content));
+                }).catch(err => console.log(err));
+                // console.log(messages.get('content'));
+        }, 500);
+    }
 }
+
+
 
 bot.login(config.discordToken);
 
